@@ -7,12 +7,13 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Resources\Auth\UserLoginResourse;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
-    public function __invoke(LoginRequest $request)
+    public function __invoke(LoginRequest $request): JsonResource
     {
         $user = User::where('email', $request->email)->first();
 
