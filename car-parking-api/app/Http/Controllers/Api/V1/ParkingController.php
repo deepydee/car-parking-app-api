@@ -7,7 +7,6 @@ use App\Http\Requests\StartParkingRequest;
 use App\Http\Resources\ParkingResource;
 use App\Models\Parking;
 use App\Services\ParkingPriceService;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -32,8 +31,13 @@ class ParkingController extends Controller
         return ParkingResource::make($parking);
     }
 
-    public function stop(Parking $parking, ParkingPriceService $parkingPriceService): JsonResource
+    public function stop(Parking $parking, ParkingPriceService $parkingPriceService): JsonResource|Response
     {
+        if ($parking->stop_time) {
+            return response()->json(['errors' => ['general' => ['Parking already stopped.']], ]
+            , Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
         $parking->update([
             'stop_time' => now(),
             'total_price' => $parkingPriceService->calculatePrice($parking->zone_id, $parking->start_time, $parking->stop_time),
