@@ -9,7 +9,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Symfony\Component\HttpFoundation\Response;
+use Knuckles\Scribe\Attributes\Group;
 
+#[Group('Auth')]
 class ProfileController extends Controller
 {
     public function show(Request $request): JsonResource

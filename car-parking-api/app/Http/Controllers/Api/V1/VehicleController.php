@@ -7,11 +7,12 @@ use App\Http\Requests\StoreVehicleRequest;
 use App\Http\Resources\VehicleResource;
 use App\Models\Vehicle;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
+use Knuckles\Scribe\Attributes\Group;
 
+#[Group('Vehicles')]
 class VehicleController extends Controller
 {
     public function index(): AnonymousResourceCollection

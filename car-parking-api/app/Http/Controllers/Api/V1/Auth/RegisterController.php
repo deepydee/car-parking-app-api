@@ -8,9 +8,10 @@ use App\Http\Resources\Auth\UserRegistrationResource;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Symfony\Component\HttpFoundation\Response;
+use Knuckles\Scribe\Attributes\Group;
 
+#[Group('Auth')]
 class RegisterController extends Controller
 {
     public function __invoke(RegisterRequest $request): JsonResponse
