@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreVehicleRequest;
 use App\Http\Resources\VehicleResource;
 use App\Models\Vehicle;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -18,11 +19,13 @@ class VehicleController extends Controller
         return VehicleResource::collection(Vehicle::all());
     }
 
-    public function store(StoreVehicleRequest $request): JsonResource
+    public function store(StoreVehicleRequest $request): JsonResponse
     {
         $vehicle = Vehicle::create($request->validated());
 
-        return VehicleResource::make($vehicle);
+        return VehicleResource::make($vehicle)
+            ->response()
+            ->setStatusCode(\Symfony\Component\HttpFoundation\Response::HTTP_CREATED);
     }
 
     public function show(Vehicle $vehicle): JsonResource
@@ -30,11 +33,13 @@ class VehicleController extends Controller
         return new VehicleResource($vehicle);
     }
 
-    public function update(StoreVehicleRequest $request, Vehicle $vehicle): JsonResource
+    public function update(StoreVehicleRequest $request, Vehicle $vehicle): JsonResponse
     {
         $vehicle->update($request->validated());
 
-        return new VehicleResource($vehicle);
+        return VehicleResource::make($vehicle)
+            ->response()
+            ->setStatusCode(Response::HTTP_ACCEPTED);
     }
 
     public function destroy(Vehicle $vehicle): Response

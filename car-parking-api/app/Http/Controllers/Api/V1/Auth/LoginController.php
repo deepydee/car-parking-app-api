@@ -6,14 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Resources\Auth\UserLoginResourse;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 
 class LoginController extends Controller
 {
-    public function __invoke(LoginRequest $request): JsonResource
+    public function __invoke(LoginRequest $request): JsonResponse
     {
         $user = User::where('email', $request->email)->first();
 
@@ -23,6 +23,8 @@ class LoginController extends Controller
             ]);
         }
 
-       return new UserLoginResourse($user);
+       return UserLoginResourse::make($user)
+            ->response()
+            ->setStatusCode(Response::HTTP_CREATED);
     }
 }

@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ParkingController extends Controller
 {
-    public function start(StartParkingRequest $request): Response|JsonResource
+    public function start(StartParkingRequest $request): Response
     {
         if (Parking::active()->where('vehicle_id', $request->vehicle_id)->exists()) {
             return response()->json([
@@ -23,7 +23,9 @@ class ParkingController extends Controller
         $parking = Parking::create($request->validated());
         $parking->load('vehicle', 'zone');
 
-        return new ParkingResource($parking);
+        return ParkingResource::make($parking)
+            ->response()
+            ->setStatusCode(Response::HTTP_CREATED);
     }
 
     public function show(Parking $parking): JsonResource

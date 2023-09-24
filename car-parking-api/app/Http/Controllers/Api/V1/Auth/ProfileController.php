@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Api\V1\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\UserUpdateRequest;
 use App\Http\Resources\Auth\UserShowResourse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProfileController extends Controller
 {
@@ -15,11 +17,13 @@ class ProfileController extends Controller
         return new UserShowResourse($request->user());
     }
 
-    public function update(UserUpdateRequest $request): JsonResource
+    public function update(UserUpdateRequest $request): JsonResponse
     {
         $r = $request;
         auth()->user()->update($request->validated());
 
-        return new UserShowResourse(auth()->user());
+        return UserShowResourse::make(auth()->user())
+            ->response()
+            ->setStatusCode(Response::HTTP_ACCEPTED);
     }
 }
