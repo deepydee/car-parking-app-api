@@ -8,7 +8,5 @@ module.exports = {
     'eslint:recommended',
     '@vue/eslint-config-prettier/skip-formatting'
   ],
-  parserOptions: {
-    ecmaVersion: 'latest'
-  }
+  "parser": "vue-eslint-parser",
 }
